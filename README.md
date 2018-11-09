@@ -1,4 +1,6 @@
-# Project Title
+[![Build Status](https://travis-ci.com/21Buttons/molange.svg?branch=master)](https://travis-ci.com/21Buttons/molange)
+
+# Molange
 
 One Paragraph of project description goes here
 
