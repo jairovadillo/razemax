@@ -2,7 +2,7 @@ from collections import defaultdict
 
 
 class EventBus:
-    _subscribers = defaultdict(list)
+    _subscribers: dict = defaultdict(list)
 
     @classmethod
     def subscribe(cls, subscriber):
@@ -12,3 +12,6 @@ class EventBus:
     def trigger(cls, event):
         for subscriber in cls._subscribers.get(event.name, []):
             subscriber.run(event)
+
+
+event_bus = EventBus()
