@@ -4,6 +4,9 @@ from molange.event_bus import EventBus as event_bus
 
 
 class TestEventBus:
+    def setup_method(self):
+        event_bus._reset()
+
     def test_call_subscriber_when_event(self):
         subscriber_mock, event_mock = self._subscribe_to_event('randomevent')
 
