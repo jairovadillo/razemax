@@ -6,7 +6,8 @@ class EventBus:
 
     @classmethod
     def subscribe(cls, subscriber):
-        cls._subscribers[subscriber.subscribe_to.name].append(subscriber)
+        for event in subscriber.subscribe_to:
+            cls._subscribers[event.name].append(subscriber)
 
     @classmethod
     def trigger(cls, event):
