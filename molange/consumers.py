@@ -18,7 +18,7 @@ class MessageConsumer:
 
         try:
             mapper = self._mapper_factory[message.event_type_name]
-            event = mapper(message)
+            event = mapper(message.body)
 
             self._event_bus.trigger(event)
         except Exception as e:  # TODO: specify exceptions...
