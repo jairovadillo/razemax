@@ -5,8 +5,8 @@ import logging
 
 
 class MessageConsumer:
-    def __init__(self, event_factory: dict, event_bus: EventBus, queue_driver: GenericDriver):
-        self._event_factory = event_factory
+    def __init__(self, mapper_factory: dict, event_bus: EventBus, queue_driver: GenericDriver):
+        self._mapper_factory = mapper_factory
         self._queue_driver = queue_driver
         self._event_bus = event_bus
 
@@ -16,16 +16,12 @@ class MessageConsumer:
         if not message:
             return None
 
-        event = self._event_factory.get(message.event_type_name)
-        if not event:
-            # TODO: report unimplemented event
-            return None
-
-        event.load(message.body)
-
         try:
+            mapper = self._mapper_factory[message.event_type_name]
+            event = mapper(message.body)
+
             self._event_bus.trigger(event)
-        except Exception as e:
+        except Exception as e:  # TODO: specify exceptions...
             logging.error(str(e))
             self._queue_driver.move_message_to_dead_letter_queue(message)
         else:
