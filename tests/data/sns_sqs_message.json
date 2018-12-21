@@ -1,0 +1,17 @@
+{
+  "Type": "Notification",
+  "MessageId": "a936a7d0-f63f-5818-b3c4-f345522c5ef6",
+  "TopicArn": "arn:aws:sns:eu-west-1:708870636378:dev-users",
+  "Message": "{\"type\": \"UserCreated\", \"meta\": {\"timestamp\": \"2018-12-20T14:06:11.751399\", \"version\": 1}, \"body\": {\"user\": {\"is_active\": true, \"email\": \"\", \"first_name\": \"\", \"website\": \"\", \"notification_options\": \"on\", \"id\": \"7627325\", \"is_staff\": false, \"language\": \"es_ES\", \"phone_number\": \"\", \"gender\": \"u\", \"username\": \"jose21b\", \"date_joined\": \"2018-12-20T15:06:10.901818+00:00\", \"description\": \"\", \"register_ip\": \"127.0.0.1\", \"is_verified\": false, \"last_name\": \"\", \"is_brand\": false, \"country\": \"ES\", \"age_group\": \"u\"}}}",
+  "Timestamp": "2018-12-20T14:06:11.905Z",
+  "SignatureVersion": "1",
+  "Signature": "qqRxCe+SQ7UdrQIbjVU7uCenybQKGyMULiTvAw8jHkTFGEL9gq91sl7YqzF8NWFLllZgEKdsv6n1bMV7P5/4i7RY1A9m4V0sxB8XJvIvN/jeYEJe8yhuL0Xm7CKUEF5aMBJkBh2lbxYL0Xpi1jwdfYdY5gwm67c4c2nuOBgNIR3hcvI76w0UgQECahs4651fXlJhVb0L0tCiYFVWKHquyf9nqqW5SqR8SjeS/SFEnGWBDCwO5bKGMv5d8gX0h3XTxjKZ+C1BVfSHKF3tgvJ4C/+KuTN6A5dpcRwI/CFdpyCdTou3CwVTKumseRfkR8eXVjDun14Tp3VZyJDGORMtpw==",
+  "SigningCertURL": "https://sns.eu-west-1.amazonaws.com/SimpleNotificationService-ac565b8b1a6c5d002d285f9598aa1d9b.pem",
+  "UnsubscribeURL": "https://sns.eu-west-1.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:eu-west-1:708870636378:dev-users:7bf652a9-dcca-43d2-9566-76fc7c6f938e",
+  "MessageAttributes": {
+    "event_name": {
+      "Type": "String",
+      "Value": "UserCreated"
+    }
+  }
+}

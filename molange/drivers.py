@@ -1,14 +1,15 @@
 import json
+import logging
+from typing import Union
 
 import boto3
 
 from molange.entities import Message
-from molange.serializers import MessageSerializer
+from molange.exceptions import DriverError
 from molange.services import MessageDeduplicationService
-from typing import Union
 
 
-class GenericDriver:
+class GenericQueueDriver:
     def receive_message(self) -> Union[Message, None]:
         pass
 
@@ -19,7 +20,7 @@ class GenericDriver:
         pass
 
 
-class SQSDriver(GenericDriver):
+class SQSDriver(GenericQueueDriver):
     def __init__(self, sqs_queue, deduplicator=None):
         self._queue = sqs_queue
         self._deduplicator = deduplicator
@@ -30,31 +31,35 @@ class SQSDriver(GenericDriver):
             return None
 
         message = message[0]
-        message_id, message = self._process_message(message)
+        message_id, message = self._process_message(message.body)
 
-        if not self._deduplicator or not self._deduplicator.is_processed(message_id):
+        if not self._deduplicator:
+            return message
+
+        if not self._deduplicator.is_processed(message_id):
             self._deduplicator.add(message_id)
             return message
-        else:
-            self.delete_message(message_id)
-            return None
 
-    def delete_message(self, message: Message) -> None:
-        print("Message {} deleted".format(message.event_type_name))
+    def delete_message(self, message_id: str) -> None:
+        print("Message {} deleted".format(message_id))
 
-    def move_message_to_dead_letter_queue(self, message: Message):
-        print("Message {} to DLQ".format(message.event_type_name))
+    def move_message_to_dead_letter_queue(self, message_id: Message):
+        print("Message {} to DLQ".format(message_id))
 
-    def _process_message(self, message):
-        message_dict = json.loads(message.body)  # TODO: ADD EXCEPTION
-        message_id = message_dict["MessageId"]
-        message_content = json.loads(message_dict["Message"])  # TODO: ADD EXCEPTION
-        message_content = MessageSerializer(strict=True).load(message_content).data
+    @classmethod
+    def _process_message(cls, message_body_str: str) -> Message:
+        try:
+            message_dict = json.loads(message_body_str)
+            message_id = message_dict["MessageId"]
+            event_name = message_dict["MessageAttributes"]["event_name"]["Value"]  # TODO: ADD EXCEPTION
+            message_content = json.loads(message_dict["Message"])  # TODO: ADD EXCEPTION
+        except (KeyError, ) as e:
+            raise DriverError(e)
 
-        return message_id, message_content
+        return Message(id=message_id, event_name=event_name, body=message_content)
 
 
-def get_sqs_driver(queue_name, aws_settings, redis_connection=None):
+def get_sqs_driver(queue_name, aws_settings, redis_connection=None) -> SQSDriver:
     sqs_resource = boto3.resource('sqs', **aws_settings)
     sqs_queue = sqs_resource.get_queue_by_name(QueueName=queue_name)
 

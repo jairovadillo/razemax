@@ -1,4 +1,5 @@
 class Message:
-    def __init__(self, event_type_name=None, body=None):
-        self.event_type_name = event_type_name
+    def __init__(self, id, event_name, body):
+        self.id = id
+        self.event_name = event_name
         self.body = body
