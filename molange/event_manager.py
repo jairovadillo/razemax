@@ -1,6 +1,5 @@
 from collections import defaultdict
 
-from .events import Event
 from .subscribers import Subscriber
 
 import logging
@@ -18,15 +17,22 @@ class _EventManager:
             return
 
         for event in subscriber.subscribe_to:
-            self.__subscribers[event.name].append(subscriber)
+            self.__subscribers[event].append(subscriber)
 
-    def trigger(self, event: Event):
-        for subscriber in self.__subscribers.get(event.name, []):
-            subscriber.run(event)
+    def trigger(self, event):
+        for subscriber in self.__subscribers.get(event.__class__, []):
+            subscriber.execute(event)
 
     def _reset(self):
         """Never call this outside tests!"""
         self.__subscribers = defaultdict(list)
+
+    def __str__(self):
+        return str(dict(self.__subscribers))
+
+    @property
+    def subscribers(self):
+        return dict(self.__subscribers)
 
 
 event_manager = _EventManager()
