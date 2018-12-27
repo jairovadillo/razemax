@@ -1,14 +1,21 @@
 import json
+import logging
+from typing import Union
 
 import boto3
 
-from molange.entities import Message
-from molange.serializers import MessageSerializer
-from molange.services import MessageDeduplicationService
-from typing import Union
+from molange.exceptions import DriverError
 
 
-class GenericDriver:
+class Message:
+    def __init__(self, id, event_name, receipt_handle, body):
+        self.id = id
+        self.event_name = event_name
+        self.body = body
+        self.receipt_handle = receipt_handle
+
+
+class GenericQueueDriver:
     def receive_message(self) -> Union[Message, None]:
         pass
 
@@ -19,47 +26,51 @@ class GenericDriver:
         pass
 
 
-class SQSDriver(GenericDriver):
-    def __init__(self, sqs_queue, deduplicator=None):
+class SQSDriver(GenericQueueDriver):
+    def __init__(self, sqs_queue):
         self._queue = sqs_queue
-        self._deduplicator = deduplicator
 
     def receive_message(self) -> Union[Message, None]:
-        message = self._queue.receive_messages()
+        message = self._queue.receive_messages(MaxNumberOfMessages=1)
+        logging.info(f"Message received: {message}")
+
         if not message:
             return None
 
         message = message[0]
-        message_id, message = self._process_message(message)
+        message = self._process_message(message)
 
-        if not self._deduplicator or not self._deduplicator.is_processed(message_id):
-            self._deduplicator.add(message_id)
-            return message
-        else:
-            self.delete_message(message_id)
-            return None
+        return message
 
     def delete_message(self, message: Message) -> None:
-        print("Message {} deleted".format(message.event_type_name))
+        self._queue.delete_messages(Entries=[{'Id': 'DummyId', 'ReceiptHandle': message.receipt_handle}])
+        logging.info("Message {} deleted".format(message.id))
 
-    def move_message_to_dead_letter_queue(self, message: Message):
-        print("Message {} to DLQ".format(message.event_type_name))
+    def move_message_to_dead_letter_queue(self, message_id: Message):
+        print("Message {} to DLQ".format(message_id))
 
-    def _process_message(self, message):
-        message_dict = json.loads(message.body)  # TODO: ADD EXCEPTION
-        message_id = message_dict["MessageId"]
-        message_content = json.loads(message_dict["Message"])  # TODO: ADD EXCEPTION
-        message_content = MessageSerializer(strict=True).load(message_content).data
+    @classmethod
+    def _process_message(cls, message_sqs) -> Message:
+        try:
+            message_dict = json.loads(message_sqs.body)
+            logging.info(f"Message body: {message_sqs.body}")
 
-        return message_id, message_content
+            message_content = json.loads(message_dict["Message"])
+            message_id = message_dict["MessageId"]
+            event_name = message_dict["MessageAttributes"]["event_name"]["Value"]
+        except (KeyError,) as e:
+            raise DriverError(e)
+        except json.JSONDecodeError:
+            raise DriverError("Message body not JSON encoded.")
+
+        return Message(id=message_id,
+                       event_name=event_name,
+                       receipt_handle=message_sqs.receipt_handle,
+                       body=message_content)
 
 
-def get_sqs_driver(queue_name, aws_settings, redis_connection=None):
+def get_sqs_driver(queue_name, aws_settings) -> SQSDriver:
     sqs_resource = boto3.resource('sqs', **aws_settings)
     sqs_queue = sqs_resource.get_queue_by_name(QueueName=queue_name)
 
-    deduplicator = None
-    if redis_connection:
-        deduplicator = MessageDeduplicationService(redis_connection)
-
-    return SQSDriver(sqs_queue, deduplicator)
+    return SQSDriver(sqs_queue)
