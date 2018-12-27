@@ -1,14 +1,16 @@
 from unittest.mock import MagicMock
 
 from molange.consumers import MessageConsumer
-from molange.drivers import GenericDriver
-from molange.entities import Message
+from molange.drivers import GenericQueueDriver, Message
 
 
 class TestConsumer:
     def test_event_triggered(self):
         message_name = 'test_message'
-        message = Message(event_type_name=message_name, body={'foo': 21})
+        message = Message(id='id',
+                          event_name=message_name,
+                          body={'foo': 21},
+                          receipt_handle='LKJ358FDH82J')
         queue_driver_mock = self._get_queue_driver_mock(return_value=message)
 
         event_name = 'test_event'
@@ -28,7 +30,10 @@ class TestConsumer:
 
     def test_mapper_called(self):
         message_name = 'test_message'
-        message = Message(event_type_name=message_name, body={'foo': 21})
+        message = Message(id=2453,
+                          event_name=message_name,
+                          body={'foo': 21},
+                          receipt_handle='aepui2948')
         queue_driver_mock = self._get_queue_driver_mock(return_value=message)
 
         mapper = MagicMock()
@@ -59,7 +64,10 @@ class TestConsumer:
         queue_driver_mock.delete_message.assert_not_called()
 
     def test_dead_letter_queue_when_missing_mapping(self):
-        message = Message(event_type_name='test_message', body={'foo': 21})
+        message = Message(id=2435,
+                          event_name='test_message',
+                          body={'foo': 21},
+                          receipt_handle='24q3w4t')
         queue_driver_mock = self._get_queue_driver_mock(return_value=message)
         event_manager_mock = MagicMock()
 
@@ -85,7 +93,7 @@ class TestConsumer:
         return subscriber_mock
 
     def _get_queue_driver_mock(self, return_value=None):
-        queue_driver = MagicMock(spec=GenericDriver)
+        queue_driver = MagicMock(spec=GenericQueueDriver)
         queue_driver.receive_message.return_value = return_value
 
         return queue_driver

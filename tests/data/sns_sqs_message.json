@@ -1,0 +1,17 @@
+{
+  "Type": "Notification",
+  "MessageId": "a936a7d0-f-b3c4-",
+  "TopicArn": "arn:aws:sns:eu-wes:dev",
+  "Message": "{\"type\": \"UserCreated\", \"meta\": {\"timestamp\": \"2018-12-20T14:06:11.751399\", \"version\": 1}, \"body\": {\"user\": {\"is_active\": true, \"email\": \"\", \"first_name\": \"\", \"phone_number\": \"\", \"gender\": \"u\", \"username\": \"jose21b\", \"date_joined\": \"2018-12-20T15:06:10.901818+00:00\", \"description\": \"\", \"register_ip\": \"127.0.0.1\", \"age_group\": \"u\"}}}",
+  "Timestamp": "2018-12-20T14:06:11.905Z",
+  "SignatureVersion": "1",
+  "Signature": "un14Tp3VZyJDGORMtpw==",
+  "SigningCertURL": "https://sns.eu-west-1.amazonaws.com/.pem",
+  "UnsubscribeURL": "",
+  "MessageAttributes": {
+    "event_name": {
+      "Type": "String",
+      "Value": "UserCreated"
+    }
+  }
+}

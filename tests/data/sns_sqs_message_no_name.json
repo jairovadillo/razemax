@@ -1,0 +1,12 @@
+{
+  "Type": "Notification",
+  "MessageId": "a936a7d0-f63f5522c5ef6",
+  "TopicArn": "arn:aws:sns:eu-west-1::dev-users",
+  "Message": "{\"type\": \"UserCreated\", \"meta\": {\"timestamp\": \"2018-12-20T14:06:11.751399\", \"version\": 1}, \"body\": {\"user\": {\"is_active\": true, \"email\": \"\", \"first_name\": \"\", \"website\": \"\", \"notification_options\": \"on\", \"id\": \"7627325\", \"is_staff\": false, \"language\": \"es_ES\", \"phone_number\": \"\", \"gender\": \"u\", \"username\": \"jose21b\", \"age_group\": \"u\"}}}",
+  "Timestamp": "2018-12-20T14:06:11.905Z",
+  "SignatureVersion": "1",
+  "Signature": "random",
+  "SigningCertURL": "https.pem",
+  "UnsubscribeURL": "https://sns.asdfkjasodf.asdco",
+  "MessageAttributes": {}
+}
