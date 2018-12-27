@@ -26,7 +26,7 @@ class TestSQSDriver:
 
         message = SQSDriver._process_message(message_sqs)
 
-        assert message.id == "a936a7d0-f63f-5818-b3c4-f345522c5ef6"
+        assert message.id == "a936a7d0-f-b3c4-"
         assert message.event_name == "UserCreated"
         assert isinstance(message.body, dict)
 
