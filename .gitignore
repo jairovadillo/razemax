@@ -5,3 +5,9 @@
 __pycache__/
 *.py[cod]
 *$py.class
+
+
+# Safety
+pro.env
+dev.env
+stg.env
