@@ -68,7 +68,7 @@ def main():
         'source_user': 'amancioortega',
         'target_user': 'jairo',
         'is_suggested': False,
-        'timestamp': datetime.now()
+        'timestamp': "2018-12-01T11:23:23.0000"
     })
 
     time.sleep(2)
