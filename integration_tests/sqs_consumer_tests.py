@@ -1,6 +1,7 @@
 import os
 import time
-from datetime import datetime
+
+import pytest
 
 from molange.consumers import MessageConsumer
 from molange.drivers import get_sqs_driver, Message
@@ -25,8 +26,9 @@ class FollowCreatedSubscriber(Subscriber):
     subscribe_to = [FollowCreatedEvent]
 
     @staticmethod
-    def execute(event):
-        print("Hello from follows! {}: {}".format(event.from_user_id, event.is_suggested))
+    def execute(event: FollowCreatedEvent):
+        assert event.from_user_id == "amancioortega"
+        assert event.is_suggested is False
 
 
 # apps.py
@@ -45,8 +47,8 @@ def follow_created_mapper(message: Message):
     return FollowCreatedEvent(**event_dict)
 
 
-# worker.py
-def main():
+@pytest.mark.integration
+def test_integration_sqs():
     message_factory = {
         'follow_created': follow_created_mapper
     }
@@ -76,10 +78,3 @@ def main():
     consumer = MessageConsumer(mapper_factory=message_factory, event_manager=event_manager, queue_driver=driver)
 
     consumer.process_message()
-    # try:
-    # except Exception as e:
-    #     logging.error(e)
-
-
-if __name__ == "__main__":
-    main()
