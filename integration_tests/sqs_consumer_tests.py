@@ -7,7 +7,6 @@ from molange.consumers import MessageConsumer
 from molange.drivers import get_sqs_driver, Message
 from molange.event_manager import event_manager
 from molange.publisher import get_sns_message_publisher
-from molange.subscribers import Subscriber
 
 
 # events.py
@@ -19,20 +18,13 @@ class FollowCreatedEvent:
         self.timestamp = timestamp
 
 
-# event_subscribers.py
-class FollowCreatedSubscriber(Subscriber):
-    # TODO: Subscribe using event + subscriber or subscriber contains event?
-    # preferred here because subscriber has to know to which event is subscribing to process it
-    subscribe_to = [FollowCreatedEvent]
-
-    @staticmethod
-    def execute(event: FollowCreatedEvent):
-        assert event.from_user_id == "amancioortega"
-        assert event.is_suggested is False
+def follow_created_subscriber(event: FollowCreatedEvent):
+    assert event.from_user_id == "amancioortega"
+    assert event.is_suggested is False
 
 
 # apps.py
-event_bus = event_manager.subscribe(FollowCreatedSubscriber)
+event_bus = event_manager.subscribe(follow_created_subscriber, FollowCreatedEvent)
 
 
 # mappers.py
@@ -73,7 +65,7 @@ def test_integration_sqs():
         'timestamp': "2018-12-01T11:23:23.0000"
     })
 
-    time.sleep(2)
+    time.sleep(1)   # Wait for deliver
 
     consumer = MessageConsumer(mapper_factory=message_factory, event_manager=event_manager, queue_driver=driver)
 

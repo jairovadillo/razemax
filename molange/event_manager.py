@@ -1,31 +1,22 @@
-from collections import defaultdict
-
-from .subscribers import Subscriber
-
 import logging
-
+from collections import defaultdict
 
 logger = logging.getLogger(__name__)
 
 
 class _EventManager:
-    __subscribers: dict = defaultdict(list)
+    __subscribers: dict = defaultdict(set)
 
-    def subscribe(self, subscriber: Subscriber):
-        if not subscriber.subscribe_to:
-            logger.warning("{} has empty subscribe_to list".format(type(subscriber).__name__))
-            return
-
-        for event in subscriber.subscribe_to:
-            self.__subscribers[event].append(subscriber)
+    def subscribe(self, subscriber, event):
+        self.__subscribers[event].add(subscriber)
 
     def trigger(self, event):
         for subscriber in self.__subscribers.get(event.__class__, []):
-            subscriber.execute(event)
+            subscriber(event)
 
     def _reset(self):
         """Never call this outside tests!"""
-        self.__subscribers = defaultdict(list)
+        self.__subscribers = defaultdict(set)
 
     def __str__(self):
         return str(dict(self.__subscribers))
