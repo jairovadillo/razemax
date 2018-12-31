@@ -34,10 +34,17 @@ North korea will attack us or Mexico!
 
 ### Trigger subscribers from SQS
 
+#### Preconditions
+
+SQS queue has to be subscribed to SNS topic before running the consumer
+
+#### Code
+
 ```python
 from molange.consumers import MessageConsumer
 from molange.drivers import get_sqs_driver
 from molange.event_manager import event_manager
+from molange.publisher import get_sns_message_publisher
 
 
 def kp_message_to_event(message):
@@ -56,6 +63,15 @@ aws_settings = {
 
 queue_driver = get_sqs_driver(aws_settings, "korea-threats-queue")
 MessageConsumer(mapper, event_manager, queue_driver).process_message()
+
+publisher = get_sns_message_publisher(aws_settings, 'korea-topic')
+publisher.publish('KPThreatCreated', {'id': 21, 'target_name': 'Portugal'})
+```
+
+Result:
+
+```
+North korea will attack us or Portugal!
 ```
 
 ## Installing (TODO)
