@@ -7,7 +7,7 @@ services:
     volumes:
      - ./config:/conf
 
-  integration_test:
+  tests:
     build:
       context: config
       dockerfile: Dockerfile

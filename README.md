@@ -62,25 +62,18 @@ MessageConsumer(mapper, event_manager, queue_driver).process_message()
 
 `pip install git@github.com/transporter`
 
+
 ## Running the tests
-
-Simply run `pytest`
-
-### Running end to end tests
 
 To run end to end tests do:
 ```
-cd integration-tests
-docker-compose up -d
-
-# Todo dockerize this
-export $(cat integration_tests/local.env )
-PYTHONPATH=$(pwd) python integration_tests/sqs_consumer_tests.py
+make unit-tests
+make integration-tests
 ```
 
 ## Authors
 
-* **Jairo Vadillo** [JairoVadillo](https://github.com/jairovadillo)
+* Jairo Vadillo ([@jairovadillo](https://github.com/jairovadillo))
 
 ## License
 
