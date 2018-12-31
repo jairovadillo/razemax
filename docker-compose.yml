@@ -9,8 +9,8 @@ services:
 
   tests:
     build:
-      context: config
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: config/Dockerfile
     image: molange_test
     volumes:
     - .:/app
