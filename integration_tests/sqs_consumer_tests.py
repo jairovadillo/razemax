@@ -4,7 +4,7 @@ import time
 import pytest
 
 from molange.consumers import MessageConsumer
-from molange.drivers import get_sqs_driver, Message
+from molange.drivers import SQSDriver, Message
 from molange.event_manager import event_manager
 from molange.publisher import get_sns_message_publisher
 
@@ -55,7 +55,7 @@ def test_integration_sqs():
     queue_name = os.environ['SQS_QUEUE_NAME']
     topic_arn = os.environ['SNS_TOPIC_ARN']
 
-    driver = get_sqs_driver(queue_name=queue_name, aws_settings=aws_settings)
+    driver = SQSDriver.build(queue_name=queue_name, aws_settings=aws_settings)
     publisher = get_sns_message_publisher(topic_arn=topic_arn, aws_settings=aws_settings)
 
     publisher.publish("follow_created", {

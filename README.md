@@ -42,12 +42,13 @@ SQS queue has to be subscribed to SNS topic before running the consumer
 
 ```python
 from molange.consumers import MessageConsumer
-from molange.drivers import get_sqs_driver
+from molange.drivers import SQSDriver
 from molange.event_manager import event_manager
 from molange.publisher import get_sns_message_publisher
 
 
 def kp_message_to_event(message):
+    # Highly recommended to use Marshmallow to validate
     return NorthKoreaThreatCreatedEvent(message.body['id'], message.body['target_name'])
 
 mapper = {
@@ -61,7 +62,7 @@ aws_settings = {
     'endpoint_url': ""
 }
 
-queue_driver = get_sqs_driver(aws_settings, "korea-threats-queue")
+queue_driver = SQSDriver.build("korea-threats-queue", aws_settings)
 MessageConsumer(mapper, event_manager, queue_driver).process_message()
 
 publisher = get_sns_message_publisher(aws_settings, 'korea-topic')

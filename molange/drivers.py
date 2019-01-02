@@ -15,18 +15,7 @@ class Message:
         self.receipt_handle = receipt_handle
 
 
-class GenericQueueDriver:
-    def receive_message(self) -> Union[Message, None]:
-        pass
-
-    def delete_message(self, message: Message) -> None:
-        pass
-
-    def move_message_to_dead_letter_queue(self, message: Message) -> None:
-        pass
-
-
-class SQSDriver(GenericQueueDriver):
+class SQSDriver:
     def __init__(self, sqs_queue):
         self._queue = sqs_queue
 
@@ -68,9 +57,9 @@ class SQSDriver(GenericQueueDriver):
                        receipt_handle=message_sqs.receipt_handle,
                        body=message_content)
 
+    @classmethod
+    def build(cls, queue_name: str, aws_settings: dict):
+        sqs_resource = boto3.resource('sqs', **aws_settings)
+        sqs_queue = sqs_resource.get_queue_by_name(QueueName=queue_name)
 
-def get_sqs_driver(queue_name, aws_settings) -> SQSDriver:
-    sqs_resource = boto3.resource('sqs', **aws_settings)
-    sqs_queue = sqs_resource.get_queue_by_name(QueueName=queue_name)
-
-    return SQSDriver(sqs_queue)
+        return cls(sqs_queue)

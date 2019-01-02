@@ -1,7 +1,7 @@
 from unittest.mock import MagicMock
 
 from molange.consumers import MessageConsumer
-from molange.drivers import GenericQueueDriver, Message
+from molange.drivers import SQSDriver, Message
 
 
 class TestConsumer:
@@ -93,7 +93,7 @@ class TestConsumer:
         return subscriber_mock
 
     def _get_queue_driver_mock(self, return_value=None):
-        queue_driver = MagicMock(spec=GenericQueueDriver)
+        queue_driver = MagicMock(spec=SQSDriver)
         queue_driver.receive_message.return_value = return_value
 
         return queue_driver

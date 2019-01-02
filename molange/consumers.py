@@ -1,15 +1,11 @@
 import logging
 
-from molange.drivers import GenericQueueDriver
+from molange.drivers import SQSDriver
 from molange.event_manager import _EventManager
-
-logging.getLogger().setLevel(logging.DEBUG)
-logging.getLogger('boto3').setLevel(logging.CRITICAL)
-logging.getLogger('botocore').setLevel(logging.CRITICAL)
 
 
 class MessageConsumer:
-    def __init__(self, mapper_factory: dict, event_manager: _EventManager, queue_driver: GenericQueueDriver):
+    def __init__(self, mapper_factory: dict, event_manager: _EventManager, queue_driver: SQSDriver):
         self._mapper_factory = mapper_factory
         self._queue_driver = queue_driver
         self._event_manager = event_manager
