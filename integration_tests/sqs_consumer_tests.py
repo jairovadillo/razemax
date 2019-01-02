@@ -6,7 +6,7 @@ import pytest
 from molange.consumers import MessageConsumer
 from molange.drivers import SQSDriver, Message
 from molange.event_manager import event_manager
-from molange.publisher import get_sns_message_publisher
+from molange.publisher import SNSMessagePublisher
 
 
 # events.py
@@ -56,7 +56,7 @@ def test_integration_sqs():
     topic_arn = os.environ['SNS_TOPIC_ARN']
 
     driver = SQSDriver.build(queue_name=queue_name, aws_settings=aws_settings)
-    publisher = get_sns_message_publisher(topic_arn=topic_arn, aws_settings=aws_settings)
+    publisher = SNSMessagePublisher.build(topic_arn=topic_arn, aws_settings=aws_settings)
 
     publisher.publish("follow_created", {
         'source_user': 'amancioortega',

@@ -44,7 +44,7 @@ SQS queue has to be subscribed to SNS topic before running the consumer
 from molange.consumers import MessageConsumer
 from molange.drivers import SQSDriver
 from molange.event_manager import event_manager
-from molange.publisher import get_sns_message_publisher
+from molange.publisher import SNSMessagePublisher
 
 
 def kp_message_to_event(message):
@@ -65,7 +65,7 @@ aws_settings = {
 queue_driver = SQSDriver.build("korea-threats-queue", aws_settings)
 MessageConsumer(mapper, event_manager, queue_driver).process_message()
 
-publisher = get_sns_message_publisher(aws_settings, 'korea-topic')
+publisher = SNSMessagePublisher.build(aws_settings, 'korea-topic')
 publisher.publish('KPThreatCreated', {'id': 21, 'target_name': 'Portugal'})
 ```
 

@@ -32,13 +32,13 @@ class SNSMessagePublisher(object):
                                             }
                                         })
 
-
-def get_sns_message_publisher(aws_settings: dict, topic_arn: str) -> SNSMessagePublisher:
-    """ aws_settings is a dict with:
-        - region_name
-        - aws_access_key_id
-        - aws_secret_access_key
-        - endpoint_url (optional)
-    """
-    sns_client = boto3.client('sns', **aws_settings)
-    return SNSMessagePublisher(sns_client, topic_arn)
+    @classmethod
+    def build(cls, aws_settings: dict, topic_arn: str):
+        """ aws_settings is a dict with:
+            - region_name
+            - aws_access_key_id
+            - aws_secret_access_key
+            - endpoint_url (optional)
+        """
+        sns_client = boto3.client('sns', **aws_settings)
+        return cls(sns_client, topic_arn)
