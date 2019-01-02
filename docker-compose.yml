@@ -1,0 +1,23 @@
+version: '3'
+services:
+  goaws:
+    image: pafortin/goaws
+    ports:
+      - 4100:4100
+    volumes:
+     - ./config:/conf
+
+  tests:
+    build:
+      context: .
+      dockerfile: config/Dockerfile
+    image: molange_test
+    volumes:
+    - .:/app
+    env_file:
+      - config/local.env
+    environment:
+      - PYTHONPATH=/app
+    depends_on:
+      - goaws
+    entrypoint: ["./config/wait-for-it.sh", "goaws:4100", "--"]

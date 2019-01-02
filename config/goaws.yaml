@@ -1,0 +1,18 @@
+Local:
+  Host: goaws                   # hostname of the goaws system  (for docker-compose this is the tag name of the container)
+  Port: 4100                        # port to listen on.
+  Region: local-01
+  LogMessages: true                 # Log messages (true/false)
+  LogFile: ./goaws_messages.log  # Log filename (for message logging
+  QueueAttributeDefaults:           # default attributes for all queues
+    VisibilityTimeout: 30              # message visibility timeout
+    ReceiveMessageWaitTimeSeconds: 0   # receive message max wait time
+  Queues:                           # List of queues to create at startup
+  - Name: local-queue1                # Queue name
+    ReceiveMessageWaitTimeSeconds: 20 # Queue receive message max wait time
+  Topics:                           # List of topic to create at startup
+  - Name: local-topic1            # Topic name - with some Subscriptions
+    Subscriptions:                # List of Subscriptions to create for this topic (queues will be created as required)
+    - QueueName: local-queue1   # Queue name
+      Raw: false                 # Raw message delivery (true/false)
+      FilterPolicy: '{"event_name": ["follow_created"]}' # Subscription's FilterPolicy, json object as a string

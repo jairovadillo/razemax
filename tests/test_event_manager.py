@@ -21,7 +21,7 @@ class TestEventBus:
         event_instance = TestEvent()
         event_manager.trigger(event_instance)
 
-        subscriber_mock.execute.assert_called_once_with(event_instance)
+        subscriber_mock.assert_called_once_with(event_instance)
 
     def test_call_correct_subscriber(self):
         self._subscribe_to_event(TestEvent)
@@ -30,11 +30,10 @@ class TestEventBus:
         event_instance = TestEvent()
         event_manager.trigger(event_instance)
 
-        subscriber_mock2.execute.assert_not_called()
+        subscriber_mock2.assert_not_called()
 
     def _subscribe_to_event(self, event_class):
         subscriber_mock = Mock()
-        subscriber_mock.subscribe_to = [event_class]
-        event_manager.subscribe(subscriber_mock)
+        event_manager.subscribe(subscriber_mock, event_class)
 
         return subscriber_mock
