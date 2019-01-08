@@ -1,6 +1,6 @@
 from unittest.mock import Mock
 
-from molange.event_manager import event_manager
+from molange.event_manager import EventManager
 
 
 class TestEvent:
@@ -13,13 +13,13 @@ class TestEvent2:
 
 class TestEventBus:
     def setup_method(self):
-        event_manager._reset()
+        EventManager._reset()
 
     def test_call_subscriber_when_event(self):
         subscriber_mock = self._subscribe_to_event(TestEvent)
 
         event_instance = TestEvent()
-        event_manager.trigger(event_instance)
+        EventManager.trigger(event_instance)
 
         subscriber_mock.assert_called_once_with(event_instance)
 
@@ -28,12 +28,12 @@ class TestEventBus:
         subscriber_mock2 = self._subscribe_to_event(TestEvent2)
 
         event_instance = TestEvent()
-        event_manager.trigger(event_instance)
+        EventManager.trigger(event_instance)
 
         subscriber_mock2.assert_not_called()
 
     def _subscribe_to_event(self, event_class):
         subscriber_mock = Mock()
-        event_manager.subscribe(subscriber_mock, event_class)
+        EventManager.subscribe(subscriber_mock, event_class)
 
         return subscriber_mock
