@@ -1,4 +1,4 @@
-# Transporter (aka. Molange)
+# Razemax
 [![Build Status](https://travis-ci.com/21Buttons/razemax.svg?branch=master)](https://travis-ci.com/21Buttons/razemax)
 
 ✉️ Async communications using AWS SNS + SQS for Python services ✨
