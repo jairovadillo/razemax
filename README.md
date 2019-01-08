@@ -10,7 +10,7 @@
 _Show me the code_
 
 ```python
-from molange.event_manager import event_manager
+from molange.event_manager import EventManager
 
 
 class NorthKoreaThreatCreatedEvent:
@@ -23,8 +23,8 @@ def trump_subscriber(event: NorthKoreaThreatCreatedEvent):
     print(f"North korea will attack us or {event.target}!")
     
     
-event_manager.subscribe(trump_subscriber, NorthKoreaThreatCreatedEvent)
-event_manager.trigger(NorthKoreaThreatCreatedEvent(0, "Mexico"))
+EventManager.subscribe(trump_subscriber, NorthKoreaThreatCreatedEvent)
+EventManager.trigger(NorthKoreaThreatCreatedEvent(0, "Mexico"))
 ```
 
 Result:
@@ -43,7 +43,7 @@ SQS queue has to be subscribed to SNS topic before running the consumer
 ```python
 from molange.consumers import MessageConsumer
 from molange.drivers import SQSDriver
-from molange.event_manager import event_manager
+from molange.event_manager import EventManager
 from molange.publisher import SNSMessagePublisher
 
 
@@ -63,7 +63,7 @@ aws_settings = {
 }
 
 queue_driver = SQSDriver.build("korea-threats-queue", aws_settings)
-MessageConsumer(mapper, event_manager, queue_driver).process_message()
+MessageConsumer(mapper, EventManager, queue_driver).process_message()
 
 publisher = SNSMessagePublisher.build(aws_settings, 'korea-topic')
 publisher.publish('KPThreatCreated', {'id': 21, 'target_name': 'Portugal'})

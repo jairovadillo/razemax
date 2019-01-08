@@ -1,11 +1,13 @@
 import logging
+from typing import Union
 
 from molange.drivers import SQSDriver
-from molange.event_manager import _EventManager
+from molange.event_manager import EventManager
 
 
 class MessageConsumer:
-    def __init__(self, mapper_factory: dict, event_manager: _EventManager, queue_driver: SQSDriver):
+    def __init__(self, mapper_factory: dict, event_manager: Union[EventManager, type(EventManager)],
+                 queue_driver: SQSDriver):
         self._mapper_factory = mapper_factory
         self._queue_driver = queue_driver
         self._event_manager = event_manager

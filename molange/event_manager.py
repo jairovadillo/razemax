@@ -4,26 +4,23 @@ from collections import defaultdict
 logger = logging.getLogger(__name__)
 
 
-class _EventManager:
+class EventManager:
     __subscribers: dict = defaultdict(set)
 
-    def subscribe(self, subscriber, event):
-        self.__subscribers[event].add(subscriber)
+    @classmethod
+    def subscribe(cls, subscriber, event):
+        cls.__subscribers[event].add(subscriber)
 
-    def trigger(self, event):
-        for subscriber in self.__subscribers.get(event.__class__, []):
+    @classmethod
+    def trigger(cls, event):
+        for subscriber in cls.__subscribers.get(event.__class__, []):
             subscriber(event)
 
-    def _reset(self):
+    @classmethod
+    def _reset(cls):
         """Never call this outside tests!"""
-        self.__subscribers = defaultdict(set)
+        cls.__subscribers = defaultdict(set)
 
-    def __str__(self):
-        return str(dict(self.__subscribers))
-
-    @property
-    def subscribers(self):
-        return dict(self.__subscribers)
-
-
-event_manager = _EventManager()
+    @classmethod
+    def subscribers(cls):
+        return dict(cls.__subscribers)

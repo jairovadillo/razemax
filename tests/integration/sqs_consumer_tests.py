@@ -5,7 +5,7 @@ import pytest
 
 from molange.consumers import MessageConsumer
 from molange.drivers import SQSDriver, Message
-from molange.event_manager import event_manager
+from molange.event_manager import EventManager
 from molange.publisher import SNSMessagePublisher
 
 
@@ -24,7 +24,7 @@ def follow_created_subscriber(event: FollowCreatedEvent):
 
 
 # apps.py
-event_bus = event_manager.subscribe(follow_created_subscriber, FollowCreatedEvent)
+event_bus = EventManager.subscribe(follow_created_subscriber, FollowCreatedEvent)
 
 
 # mappers.py
@@ -67,6 +67,6 @@ def test_integration_sqs():
 
     time.sleep(1)   # Wait for deliver
 
-    consumer = MessageConsumer(mapper_factory=message_factory, event_manager=event_manager, queue_driver=driver)
+    consumer = MessageConsumer(mapper_factory=message_factory, event_manager=EventManager(), queue_driver=driver)
 
     consumer.process_message()
