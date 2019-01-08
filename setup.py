@@ -6,7 +6,7 @@ import os
 
 from setuptools import setup
 
-NAME = 'molange'
+NAME = 'razemax'
 DESCRIPTION = 'SNS + SQS Communications made easy'
 URL = f'https://github.com/21buttons/{NAME}'
 EMAIL = 'jairo@21buttons.com'

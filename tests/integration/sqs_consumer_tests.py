@@ -3,10 +3,10 @@ import time
 
 import pytest
 
-from molange.consumers import MessageConsumer
-from molange.drivers import SQSDriver, Message
-from molange.event_manager import EventManager
-from molange.publisher import SNSMessagePublisher
+from razemax.consumers import MessageConsumer
+from razemax.drivers import SQSDriver, Message
+from razemax.event_manager import EventManager
+from razemax.publisher import SNSMessagePublisher
 
 
 # events.py

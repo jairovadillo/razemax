@@ -4,7 +4,7 @@ from typing import Union
 
 import boto3
 
-from molange.exceptions import DriverError
+from razemax.exceptions import DriverError
 
 
 class Message:
