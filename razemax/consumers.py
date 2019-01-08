@@ -1,8 +1,8 @@
 import logging
 from typing import Union
 
-from molange.drivers import SQSDriver
-from molange.event_manager import EventManager
+from razemax.drivers import SQSDriver
+from razemax.event_manager import EventManager
 
 
 class MessageConsumer:

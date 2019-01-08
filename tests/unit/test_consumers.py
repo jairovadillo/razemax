@@ -1,7 +1,7 @@
 from unittest.mock import MagicMock
 
-from molange.consumers import MessageConsumer
-from molange.drivers import SQSDriver, Message
+from razemax.consumers import MessageConsumer
+from razemax.drivers import SQSDriver, Message
 
 
 class TestConsumer:

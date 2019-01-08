@@ -3,8 +3,8 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from molange.drivers import SQSDriver
-from molange.exceptions import DriverError
+from razemax.drivers import SQSDriver
+from razemax.exceptions import DriverError
 
 
 class TestSQSDriver:

@@ -1,6 +1,6 @@
 from unittest.mock import Mock
 
-from molange.event_manager import EventManager
+from razemax.event_manager import EventManager
 
 
 class TestEvent:

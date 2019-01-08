@@ -1,5 +1,5 @@
-# Transporter (aka. Molange)
-[![Build Status](https://travis-ci.com/21Buttons/molange.svg?branch=master)](https://travis-ci.com/21Buttons/molange)
+# Razemax
+[![Build Status](https://travis-ci.com/21Buttons/razemax.svg?branch=master)](https://travis-ci.com/21Buttons/razemax)
 
 ✉️ Async communications using AWS SNS + SQS for Python services ✨
 
@@ -10,7 +10,7 @@
 _Show me the code_
 
 ```python
-from molange.event_manager import EventManager
+from razemax.event_manager import EventManager
 
 
 class NorthKoreaThreatCreatedEvent:
@@ -41,10 +41,10 @@ SQS queue has to be subscribed to SNS topic before running the consumer
 #### Code
 
 ```python
-from molange.consumers import MessageConsumer
-from molange.drivers import SQSDriver
-from molange.event_manager import EventManager
-from molange.publisher import SNSMessagePublisher
+from razemax.consumers import MessageConsumer
+from razemax.drivers import SQSDriver
+from razemax.event_manager import EventManager
+from razemax.publisher import SNSMessagePublisher
 
 
 def kp_message_to_event(message):
