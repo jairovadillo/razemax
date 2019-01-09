@@ -15,7 +15,7 @@ REQUIRES_PYTHON = '>=3.6.0'
 VERSION = None
 
 REQUIRED = [
-    'boto3>=1.9.40,<1.10'
+    'boto3'
 ]
 
 EXTRAS = {}
