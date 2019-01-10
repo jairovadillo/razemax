@@ -11,3 +11,8 @@ __pycache__/
 pro.env
 dev.env
 stg.env
+
+build/
+dist/
+.pytest_cache
+razemax.egg-info
