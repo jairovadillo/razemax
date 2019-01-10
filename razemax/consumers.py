@@ -33,6 +33,6 @@ class MessageConsumer:
             self._event_manager.trigger(event)
         except Exception as e:  # TODO: specify exceptions...
             logging.error(str(e))
-            self._queue_driver.move_message_to_dead_letter_queue(message)
+            self._queue_driver.mark_message_unprocessed(message, e)
         else:
-            self._queue_driver.delete_message(message)
+            self._queue_driver.mark_message_processed(message)

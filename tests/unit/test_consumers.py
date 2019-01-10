@@ -60,8 +60,8 @@ class TestConsumer:
                                    queue_driver=queue_driver_mock)
         consumer.process_message()
 
-        queue_driver_mock.move_message_to_dead_letter_queue.assert_not_called()
-        queue_driver_mock.delete_message.assert_not_called()
+        queue_driver_mock.mark_message_unprocessed.assert_not_called()
+        queue_driver_mock.mark_message_processed.assert_not_called()
 
     def test_dead_letter_queue_when_missing_mapping(self):
         message = Message(id=2435,
@@ -78,7 +78,7 @@ class TestConsumer:
                                    queue_driver=queue_driver_mock)
         consumer.process_message()
 
-        queue_driver_mock.move_message_to_dead_letter_queue.assert_called_once_with(message)
+        queue_driver_mock.mark_message_unprocessed.assert_called_once()
 
     def _get_event_mock(self, event_name):
         event_mock = MagicMock()

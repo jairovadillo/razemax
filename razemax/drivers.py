@@ -31,12 +31,13 @@ class SQSDriver:
 
         return message
 
-    def delete_message(self, message: Message) -> None:
+    def mark_message_processed(self, message: Message) -> None:
         self._queue.delete_messages(Entries=[{'Id': 'DummyId', 'ReceiptHandle': message.receipt_handle}])
         logging.info("Message {} deleted".format(message.id))
 
-    def move_message_to_dead_letter_queue(self, message_id: Message):
-        print("Message {} to DLQ".format(message_id))
+    def mark_message_unprocessed(self, message_id: Message, exception: Exception):
+        # TODO: Add dead letter queue implementation
+        pass
 
     @classmethod
     def _process_message(cls, message_sqs) -> Message:
