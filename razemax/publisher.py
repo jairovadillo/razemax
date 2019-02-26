@@ -10,13 +10,15 @@ class SNSMessagePublisher(object):
         self._sns_client = sns_client
         self._topic_arn = topic_arn
 
-    def publish(self, event_name, event_body):
+    def publish(self, event_name: str, event_body: dict, extra_meta: dict = {}):
+        meta = {
+            "timestamp": datetime.utcnow().isoformat('T'),
+            "version": 1
+        }
+        meta.update(extra_meta)
         message = {
             "type": event_name,
-            "meta": {
-                "timestamp": datetime.utcnow().isoformat('T'),
-                "version": 1
-            },
+            "meta": meta,
             "body": event_body
         }
 
