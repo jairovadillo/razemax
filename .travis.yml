@@ -22,7 +22,7 @@ script:
 deploy:
   provider: pypi
   user: "21buttons"
-  server: https://upload.pypi.org/pypi/
+  server: https://upload.pypi.org/legacy/
   password:
     secure: AynaGwVi0fsL+2wQbp9jHQqtYAKvn9YOtpgWMrnJd0ByB/LEKnLpzk7Y0CPsmGkvzcgSn/FJI6orOaxHuL4edzryYc/AeyRbASgj4oibBnijw/qoWcXQJjYC2//W4S6cb9CxsVUryErRtLLSzVLteyytpaQafqy/cJYr/0xvlLt16nqyPWrq5/pzj1Hv97G03e7Tfdl1v+yGnYrQiB+9KbFRRwYK4sVSeVJlYCxlYNExb+aDaKqY2LZEc25xDh9FYQmMBnCbVu/uDljQzB/K0WnSrpuRvrN2FadkNdTUJbYO0jqbtBaHZGhx94iqjPhNkgh6A9RgG/sxd8+7bLT9FL0YP/3lPYZjas3owLiYM3duKcAmZNIYtGYvyUxMVxGFRWMorCM0+QPbJugUZgkhcQfnhP6ImavU3QjV5MVbFmWCPYo85P+kNSB+u28JK3AbfjzAJ17mzEquYdbnePwNtW+CLQiySFAIIAQvs0fM5jyq6NIxcr6BZuTHQWhaYBOaqyIR1/tdVBFb81WeqFzxQhiW+tOLlalaX83O7waVPJdgWyCT00KZ+6dE1IY+kdhUDIJMI/EPYCHdGOv3Dyn2KLVrvpCwhKrnjezh+fslFX5e/mV6i/kIVk51ObgV5WPAAOAnVbF/Jdi7Ighl1cV7yGm2akS2dhlzG2RnJBzpR6w=
   on:
