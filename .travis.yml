@@ -11,6 +11,10 @@ before_install:
 - chmod +x docker-compose
 - sudo mv docker-compose /usr/local/bin
 
+stages:
+  - test
+  - deploy
+
 script:
 - make unit-tests
 - make integration-tests
@@ -25,8 +29,8 @@ deploy:
 
 jobs:
   include:
-  - stage: "Tests"
-    - name: "Unit Tests"
-      script: make unit-tests
-    - name: "Integration Tests"
-      script: make integration-tests
+  - stage: test
+    name: Unit Tests
+    script: make unit-tests
+  - name: Integration Tests
+    script: make integration-tests
