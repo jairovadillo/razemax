@@ -18,15 +18,6 @@ stages:
   - test
   - deploy
 
-deploy:
-  provider: pypi
-  user: 21buttons
-  server: https://upload.pypi.org/legacy/
-  password:
-    secure: yZsW6Xt7IsBx9VsCwbq4t4+sVVuH1jZAnRRgASE9fw/zALQ3zfen63rikB644FPV81F0RuAZN1R054GbZrL2U1sXYX4vSS6OLXCx7ESfdpCrht2uCmUcepITLkPYJp3nyXV3CW0bf8REwbo7EcMgsUDqdH3oOEkbMWzuK6S1LZeVT+SoM4CFJKvRUGOV4qzg0NZ6Er6W55VvU1Zjr9nP8BMTFL29XjROf+9uPf0Mmv/4LLoKC8fAJ3Zyq6ZjBYNOj4e7ZcolYYcHvXj9xDb7Tt3We7xPzZzjYi8tKUq3KRYW11c+crGl5BE+qMbutnYvkX1WHpH93oN65IkerQ327bDjWZHb3xDzmHVCdDQNSkAV1w9mRnwKaqVua6nIVb+qBTlO7nu2IZyqBy5IsL5wmL+hfLn9wYPxz16HnZLCQRgKmn0ynARG/VrofnAz28QEvA/m6FyEXehhfMUnyL4bjhmM2YV0yGMR8au/8Qe68Eo22UzEXPIRW/HHrXFPZYrZfuluhkajT1UtVfnSOgWt6GMCS80LEWwsSGTrANYzO+eXqR3B3Cp9kXnTfjldLenidcgy1lfuryeO66VH2dr3xPBKw07j/5QfYwe3IMkWhvXfnvAVvU8c06q1p3qf/umpmXDkm27i35dHkDyCUlqyN1w25oD2bj+InXKy+AepbIE=
-  on:
-    tags: true
-
 jobs:
   include:
     - stage: test
@@ -34,3 +25,14 @@ jobs:
       script: make unit-tests
     - name: Integration Tests
       script: make integration-tests
+    - stage: deploy
+      install: skip
+      script: skip
+      deploy:
+        provider: pypi
+        user: 21buttons
+        server: https://upload.pypi.org/legacy/
+        password:
+          secure: yZsW6Xt7IsBx9VsCwbq4t4+sVVuH1jZAnRRgASE9fw/zALQ3zfen63rikB644FPV81F0RuAZN1R054GbZrL2U1sXYX4vSS6OLXCx7ESfdpCrht2uCmUcepITLkPYJp3nyXV3CW0bf8REwbo7EcMgsUDqdH3oOEkbMWzuK6S1LZeVT+SoM4CFJKvRUGOV4qzg0NZ6Er6W55VvU1Zjr9nP8BMTFL29XjROf+9uPf0Mmv/4LLoKC8fAJ3Zyq6ZjBYNOj4e7ZcolYYcHvXj9xDb7Tt3We7xPzZzjYi8tKUq3KRYW11c+crGl5BE+qMbutnYvkX1WHpH93oN65IkerQ327bDjWZHb3xDzmHVCdDQNSkAV1w9mRnwKaqVua6nIVb+qBTlO7nu2IZyqBy5IsL5wmL+hfLn9wYPxz16HnZLCQRgKmn0ynARG/VrofnAz28QEvA/m6FyEXehhfMUnyL4bjhmM2YV0yGMR8au/8Qe68Eo22UzEXPIRW/HHrXFPZYrZfuluhkajT1UtVfnSOgWt6GMCS80LEWwsSGTrANYzO+eXqR3B3Cp9kXnTfjldLenidcgy1lfuryeO66VH2dr3xPBKw07j/5QfYwe3IMkWhvXfnvAVvU8c06q1p3qf/umpmXDkm27i35dHkDyCUlqyN1w25oD2bj+InXKy+AepbIE=
+        on:
+          tags: true
