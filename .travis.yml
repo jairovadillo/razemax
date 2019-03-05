@@ -1,33 +1,31 @@
 language: python
 python:
-- "3.6"
-
+- '3.6'
 env:
-- DOCKER_COMPOSE_VERSION=1.23.2
-
+  matrix:
+  - DOCKER_COMPOSE_VERSION=1.23.2
+  global:
+    secure: YQcLAmWODTtHlf1pa45T9LjwLxWWOmwoS3AWxgk5QBBLnE3kaFxfdsc33gMoUquErzUM4adaaue9LMEKsiKz2vDzDpe2bVgE11HGmaVHdSHyIPKJ5Sb6NlzkqxYhUhLqj0Kbt2rLZONCRpMVnU3dqQoYqOFMmbR+pW7PhMLxrKRd8U99EjW+fXA4WQNi35h7hWpf/mu+P8gXRQpG0Zq7olEHcdhHXuaohkvxU+2l4A1Uf8qVGGxkTUAqUpNvyXe0gWjXqmGuexEAX+H5YZNVQgnt6xgenFSQsErfx1hyQGCvFXd8x5YyVJWAGThutkZjFEjNba0LaNLf5ciFFg9mSFZYauFo4unefaf0b3KvvTAupf7EfYl7iq2kkpTfgSRNotJpAgIsRhd3hZkbmcm++kFPfj8Wdh3alYMvnO2mwpWWhO3qHUBAMasGb0Wz4xXIVRtiUrm05WenhTQQ4GKkb7Mh/w6XgNM+ygN0oTuR/fS8LVnqVk/GW3qTCSyCsS70ghCOMv7caBKgha053b2Nqu9wS6uGUvWvzz7Mrhkcf5qyptP3kcSAP0aLwTvAcIHHaG40AJtoB1u+wUERk8CM0l+sO/6uRo2NH0wkQoGwdtTk/zEbAblpd35s5okag4NZVLL8/JCwgml372oljSQRb/z+VkvweYvZwsl1/LBh4Hc=
 before_install:
 - sudo rm /usr/local/bin/docker-compose
-- curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+- curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname
+  -s`-`uname -m` > docker-compose
 - chmod +x docker-compose
 - sudo mv docker-compose /usr/local/bin
-
 stages:
-  - test
-  - deploy
-
+- test
+- deploy
 script:
 - make unit-tests
 - make integration-tests
-
 deploy:
   provider: pypi
-  user: "21buttons"
+  user: 21buttons
   server: https://upload.pypi.org/legacy/
   password:
-    secure: AynaGwVi0fsL+2wQbp9jHQqtYAKvn9YOtpgWMrnJd0ByB/LEKnLpzk7Y0CPsmGkvzcgSn/FJI6orOaxHuL4edzryYc/AeyRbASgj4oibBnijw/qoWcXQJjYC2//W4S6cb9CxsVUryErRtLLSzVLteyytpaQafqy/cJYr/0xvlLt16nqyPWrq5/pzj1Hv97G03e7Tfdl1v+yGnYrQiB+9KbFRRwYK4sVSeVJlYCxlYNExb+aDaKqY2LZEc25xDh9FYQmMBnCbVu/uDljQzB/K0WnSrpuRvrN2FadkNdTUJbYO0jqbtBaHZGhx94iqjPhNkgh6A9RgG/sxd8+7bLT9FL0YP/3lPYZjas3owLiYM3duKcAmZNIYtGYvyUxMVxGFRWMorCM0+QPbJugUZgkhcQfnhP6ImavU3QjV5MVbFmWCPYo85P+kNSB+u28JK3AbfjzAJ17mzEquYdbnePwNtW+CLQiySFAIIAQvs0fM5jyq6NIxcr6BZuTHQWhaYBOaqyIR1/tdVBFb81WeqFzxQhiW+tOLlalaX83O7waVPJdgWyCT00KZ+6dE1IY+kdhUDIJMI/EPYCHdGOv3Dyn2KLVrvpCwhKrnjezh+fslFX5e/mV6i/kIVk51ObgV5WPAAOAnVbF/Jdi7Ighl1cV7yGm2akS2dhlzG2RnJBzpR6w=
+    secure: yZsW6Xt7IsBx9VsCwbq4t4+sVVuH1jZAnRRgASE9fw/zALQ3zfen63rikB644FPV81F0RuAZN1R054GbZrL2U1sXYX4vSS6OLXCx7ESfdpCrht2uCmUcepITLkPYJp3nyXV3CW0bf8REwbo7EcMgsUDqdH3oOEkbMWzuK6S1LZeVT+SoM4CFJKvRUGOV4qzg0NZ6Er6W55VvU1Zjr9nP8BMTFL29XjROf+9uPf0Mmv/4LLoKC8fAJ3Zyq6ZjBYNOj4e7ZcolYYcHvXj9xDb7Tt3We7xPzZzjYi8tKUq3KRYW11c+crGl5BE+qMbutnYvkX1WHpH93oN65IkerQ327bDjWZHb3xDzmHVCdDQNSkAV1w9mRnwKaqVua6nIVb+qBTlO7nu2IZyqBy5IsL5wmL+hfLn9wYPxz16HnZLCQRgKmn0ynARG/VrofnAz28QEvA/m6FyEXehhfMUnyL4bjhmM2YV0yGMR8au/8Qe68Eo22UzEXPIRW/HHrXFPZYrZfuluhkajT1UtVfnSOgWt6GMCS80LEWwsSGTrANYzO+eXqR3B3Cp9kXnTfjldLenidcgy1lfuryeO66VH2dr3xPBKw07j/5QfYwe3IMkWhvXfnvAVvU8c06q1p3qf/umpmXDkm27i35dHkDyCUlqyN1w25oD2bj+InXKy+AepbIE=
   on:
     tags: true
-
 jobs:
   include:
   - stage: test
