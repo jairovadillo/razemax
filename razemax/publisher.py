@@ -35,12 +35,13 @@ class SNSMessagePublisher(object):
                                         })
 
     @classmethod
-    def build(cls, aws_settings: dict, topic_arn: str):
+    def build(cls, topic_arn: str, aws_settings: dict = {}):
         """ aws_settings is a dict with:
             - region_name
             - aws_access_key_id
             - aws_secret_access_key
             - endpoint_url (optional)
         """
-        sns_client = boto3.client('sns', **aws_settings)
+        sns_client = boto3.client('sns', **(aws_settings or {}))
+
         return cls(sns_client, topic_arn)
