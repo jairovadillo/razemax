@@ -21,8 +21,8 @@ class NorthKoreaThreatCreatedEvent:
 
 def trump_subscriber(event: NorthKoreaThreatCreatedEvent):
     print(f"North korea will attack us or {event.target}!")
-    
-    
+
+
 EventManager.subscribe(trump_subscriber, NorthKoreaThreatCreatedEvent)
 EventManager.trigger(NorthKoreaThreatCreatedEvent(0, "Mexico"))
 ```
@@ -65,7 +65,7 @@ aws_settings = {
 queue_driver = SQSDriver.build("korea-threats-queue", aws_settings)
 MessageConsumer(mapper, EventManager, queue_driver).process_message()
 
-publisher = SNSMessagePublisher.build(aws_settings, 'korea-topic')
+publisher = SNSMessagePublisher.build('korea-topic', aws_settings)
 publisher.publish('KPThreatCreated', {'id': 21, 'target_name': 'Portugal'})
 ```
 
