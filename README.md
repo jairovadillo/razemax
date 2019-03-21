@@ -49,7 +49,7 @@ from razemax.publisher import SNSMessagePublisher
 
 def kp_message_to_event(message):
     # Highly recommended to use Marshmallow to validate
-    return NorthKoreaThreatCreatedEvent(message.body['id'], message.body['target_name'])
+    return NorthKoreaThreatCreatedEvent(message.body['body']['id'], message.body['body']['target_name'])
 
 mapper = {
     'KPThreatCreated': kp_message_to_event
