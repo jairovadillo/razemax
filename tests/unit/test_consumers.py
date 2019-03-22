@@ -2,14 +2,20 @@ from unittest.mock import MagicMock
 
 from razemax.consumers import MessageConsumer
 from razemax.drivers import SQSDriver, Message
+from razemax.messages import EventMessage
 
 
 class TestConsumer:
     def test_event_triggered(self):
         message_name = 'test_message'
+        event_message = EventMessage(
+            type='SomeEventType',
+            body={'foo': 21},
+            meta={}
+        )
         message = Message(id='id',
                           event_name=message_name,
-                          body={'foo': 21},
+                          body=event_message.__dict__,
                           receipt_handle='LKJ358FDH82J')
         queue_driver_mock = self._get_queue_driver_mock(return_value=message)
 
@@ -30,9 +36,14 @@ class TestConsumer:
 
     def test_mapper_called(self):
         message_name = 'test_message'
+        event_message = EventMessage(
+            type='SomeEventType',
+            body={'foo': 21},
+            meta={}
+        )
         message = Message(id=2453,
                           event_name=message_name,
-                          body={'foo': 21},
+                          body=event_message.__dict__,
                           receipt_handle='aepui2948')
         queue_driver_mock = self._get_queue_driver_mock(return_value=message)
 
@@ -48,7 +59,7 @@ class TestConsumer:
                                    queue_driver=queue_driver_mock)
         consumer.process_message()
 
-        mapper.assert_called_once_with(message)
+        mapper.assert_called_once()
 
     def test_message_not_received(self):
         mapper_factory = {}
@@ -64,9 +75,14 @@ class TestConsumer:
         queue_driver_mock.mark_message_processed.assert_not_called()
 
     def test_dead_letter_queue_when_missing_mapping(self):
+        event_message = EventMessage(
+            type='SomeEventType',
+            body={'foo': 21},
+            meta={}
+        )
         message = Message(id=2435,
                           event_name='test_message',
-                          body={'foo': 21},
+                          body=event_message.__dict__,
                           receipt_handle='24q3w4t')
         queue_driver_mock = self._get_queue_driver_mock(return_value=message)
         event_manager_mock = MagicMock()

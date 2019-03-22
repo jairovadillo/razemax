@@ -3,6 +3,7 @@ from typing import Union
 
 from razemax.drivers import SQSDriver
 from razemax.event_manager import EventManager
+from razemax.messages import EventMessage
 
 
 class MessageConsumer:
@@ -21,12 +22,13 @@ class MessageConsumer:
             return None
 
         logging.info(f"Message type is: {message.event_name}")
+        event_message = EventMessage(**message.body)
         try:
             # Parse message to event
             mapper = self._mapper_factory[message.event_name]
             logging.info(f"Selected mapper is: {mapper}")
 
-            event = mapper(message)
+            event = mapper(event_message)
             logging.info(f"Event type is: {event.__class__}")
 
             # Trigger subscribers

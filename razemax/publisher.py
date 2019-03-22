@@ -4,6 +4,8 @@ from datetime import datetime
 
 import boto3
 
+from razemax.messages import EventMessage
+
 
 class SNSMessagePublisher(object):
     def __init__(self, sns_client, topic_arn):
@@ -21,12 +23,17 @@ class SNSMessagePublisher(object):
             "meta": meta,
             "body": event_body
         }
+        event_message = EventMessage(
+            type=event_name,
+            body=event_body,
+            meta=meta
+        )
 
-        message_json = json.dumps(message)
+        event_message_json = event_message.json()
         logging.info(f"event name {event_name}")
 
         return self._sns_client.publish(TopicArn=self._topic_arn,
-                                        Message=message_json,
+                                        Message=event_message_json,
                                         MessageAttributes={
                                             'event_name': {
                                                 'DataType': 'String',
