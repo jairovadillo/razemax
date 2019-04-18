@@ -21,9 +21,10 @@ class SNSMessagePublisher(object):
             "meta": meta,
             "body": event_body
         }
-
         message_json = json.dumps(message)
-        logging.info(f"event name {event_name}")
+
+        # https://docs.python.org/3/howto/logging.html#optimization
+        logging.debug('event_name %s, topic_arn %s, message_json %s', event_name, self._topic_arn, message_json)
 
         return self._sns_client.publish(TopicArn=self._topic_arn,
                                         Message=message_json,

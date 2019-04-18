@@ -21,7 +21,7 @@ class SQSDriver:
 
     def receive_message(self) -> Union[Message, None]:
         message = self._queue.receive_messages(MaxNumberOfMessages=1)
-        logging.info(f"Message received: {message}")
+        logging.debug(f"Message received: {message}")
 
         if not message:
             return None
@@ -33,7 +33,7 @@ class SQSDriver:
 
     def mark_message_processed(self, message: Message) -> None:
         self._queue.delete_messages(Entries=[{'Id': 'DummyId', 'ReceiptHandle': message.receipt_handle}])
-        logging.info("Message {} deleted".format(message.id))
+        logging.debug("Message {} deleted".format(message.id))
 
     def mark_message_unprocessed(self, message_id: Message, exception: Exception):
         # TODO: Add dead letter queue implementation
@@ -43,7 +43,7 @@ class SQSDriver:
     def _process_message(cls, message_sqs) -> Message:
         try:
             message_dict = json.loads(message_sqs.body)
-            logging.info(f"Message body: {message_sqs.body}")
+            logging.debug(f"Message body: {message_sqs.body}")
 
             message_content = json.loads(message_dict["Message"])
             message_id = message_dict["MessageId"]
