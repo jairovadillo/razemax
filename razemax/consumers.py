@@ -17,17 +17,17 @@ class MessageConsumer:
         message = self._queue_driver.receive_message()
 
         if not message:
-            logging.info("No messages to process")
+            logging.debug("No messages to process")
             return None
 
-        logging.info(f"Message type is: {message.event_name}")
+        logging.debug(f"Message type is: {message.event_name}")
         try:
             # Parse message to event
             mapper = self._mapper_factory[message.event_name]
-            logging.info(f"Selected mapper is: {mapper}")
+            logging.debug(f"Selected mapper is: {mapper}")
 
             event = mapper(message)
-            logging.info(f"Event type is: {event.__class__}")
+            logging.debug(f"Event type is: {event.__class__}")
 
             # Trigger subscribers
             self._event_manager.trigger(event)
