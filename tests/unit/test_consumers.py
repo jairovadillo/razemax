@@ -1,11 +1,15 @@
 from unittest.mock import MagicMock
 
+import pytest
+from asynctest import CoroutineMock
+
 from razemax.consumers import MessageConsumer
 from razemax.drivers import SQSDriver, Message
 
 
 class TestConsumer:
-    def test_event_triggered(self):
+    @pytest.mark.asyncio
+    async def test_event_triggered(self):
         message_name = 'test_message'
         message = Message(id='id',
                           event_name=message_name,
@@ -24,11 +28,12 @@ class TestConsumer:
         consumer = MessageConsumer(mapper_factory=mapper_factory,
                                    event_manager=event_manager_mock,
                                    queue_driver=queue_driver_mock)
-        consumer.process_message()
+        await consumer.process_message()
 
         event_manager_mock.trigger.assert_called_once_with(event)
 
-    def test_mapper_called(self):
+    @pytest.mark.asyncio
+    async def test_mapper_called(self):
         message_name = 'test_message'
         message = Message(id=2453,
                           event_name=message_name,
@@ -46,11 +51,12 @@ class TestConsumer:
         consumer = MessageConsumer(mapper_factory=mapper_factory,
                                    event_manager=event_manager_mock,
                                    queue_driver=queue_driver_mock)
-        consumer.process_message()
+        await consumer.process_message()
 
         mapper.assert_called_once_with(message)
 
-    def test_message_not_received(self):
+    @pytest.mark.asyncio
+    async def test_message_not_received(self):
         mapper_factory = {}
         queue_driver_mock = self._get_queue_driver_mock()
         event_manager_mock = MagicMock()
@@ -58,12 +64,13 @@ class TestConsumer:
         consumer = MessageConsumer(mapper_factory=mapper_factory,
                                    event_manager=event_manager_mock,
                                    queue_driver=queue_driver_mock)
-        consumer.process_message()
+        await consumer.process_message()
 
         queue_driver_mock.mark_message_unprocessed.assert_not_called()
         queue_driver_mock.mark_message_processed.assert_not_called()
 
-    def test_dead_letter_queue_when_missing_mapping(self):
+    @pytest.mark.asyncio
+    async def test_dead_letter_queue_when_missing_mapping(self):
         message = Message(id=2435,
                           event_name='test_message',
                           body={'foo': 21},
@@ -76,7 +83,7 @@ class TestConsumer:
         consumer = MessageConsumer(mapper_factory=mapper_factory,
                                    event_manager=event_manager_mock,
                                    queue_driver=queue_driver_mock)
-        consumer.process_message()
+        await consumer.process_message()
 
         queue_driver_mock.mark_message_unprocessed.assert_called_once()
 
@@ -94,6 +101,9 @@ class TestConsumer:
 
     def _get_queue_driver_mock(self, return_value=None):
         queue_driver = MagicMock(spec=SQSDriver)
+        queue_driver.receive_message = CoroutineMock()
         queue_driver.receive_message.return_value = return_value
+
+        queue_driver.mark_message_processed = CoroutineMock()
 
         return queue_driver

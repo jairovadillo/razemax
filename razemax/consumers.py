@@ -12,9 +12,9 @@ class MessageConsumer:
         self._queue_driver = queue_driver
         self._event_manager = event_manager
 
-    def process_message(self):
+    async def process_message(self):
         # Receive message
-        message = self._queue_driver.receive_message()
+        message = await self._queue_driver.receive_message()
 
         if not message:
             logging.debug("No messages to process")
@@ -35,4 +35,4 @@ class MessageConsumer:
             logging.error(str(e))
             self._queue_driver.mark_message_unprocessed(message, e)
         else:
-            self._queue_driver.mark_message_processed(message)
+            await self._queue_driver.mark_message_processed(message)

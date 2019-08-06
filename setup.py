@@ -15,7 +15,6 @@ REQUIRES_PYTHON = '>=3.7.0'
 VERSION = None
 
 REQUIRED = [
-    'boto3',
     'aiobotocore'
 ]
 

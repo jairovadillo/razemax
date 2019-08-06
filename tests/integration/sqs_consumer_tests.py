@@ -57,7 +57,7 @@ async def test_integration_sqs():
     queue_name = os.environ['SQS_QUEUE_NAME']
     topic_arn = os.environ['SNS_TOPIC_ARN']
 
-    driver = SQSDriver.build(queue_name=queue_name, aws_settings=aws_settings)
+    driver = await SQSDriver.build(queue_name=queue_name, aws_settings=aws_settings)
     publisher = await SNSMessagePublisher.build(topic_arn=topic_arn, aws_settings=aws_settings)
 
     await publisher.publish("follow_created", {
@@ -71,4 +71,4 @@ async def test_integration_sqs():
 
     consumer = MessageConsumer(mapper_factory=message_factory, event_manager=EventManager(), queue_driver=driver)
 
-    consumer.process_message()
+    await consumer.process_message()
