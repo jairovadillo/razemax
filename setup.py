@@ -11,11 +11,12 @@ DESCRIPTION = 'SNS + SQS Communications made easy'
 URL = f'https://github.com/21buttons/{NAME}'
 EMAIL = 'jairo@21buttons.com'
 AUTHOR = '21 Buttons APP S.L.'
-REQUIRES_PYTHON = '>=3.6.0'
+REQUIRES_PYTHON = '>=3.7.0'
 VERSION = None
 
 REQUIRED = [
-    'boto3'
+    'boto3',
+    'aiobotocore'
 ]
 
 EXTRAS = {}
@@ -55,7 +56,6 @@ setup(
         'Intended Audience :: Developers',
         'Natural Language :: English',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
     ],
 )

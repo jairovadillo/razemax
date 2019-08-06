@@ -1,6 +1,6 @@
 language: python
 python:
-  - '3.6'
+  - '3.7'
 env:
   matrix:
     - DOCKER_COMPOSE_VERSION=1.23.2

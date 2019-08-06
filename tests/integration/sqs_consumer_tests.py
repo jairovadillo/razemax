@@ -1,3 +1,4 @@
+import asyncio
 import os
 import time
 
@@ -40,7 +41,8 @@ def follow_created_mapper(message: Message):
 
 
 @pytest.mark.integration
-def test_integration_sqs():
+@pytest.mark.asyncio
+async def test_integration_sqs():
     message_factory = {
         'follow_created': follow_created_mapper
     }
@@ -56,9 +58,9 @@ def test_integration_sqs():
     topic_arn = os.environ['SNS_TOPIC_ARN']
 
     driver = SQSDriver.build(queue_name=queue_name, aws_settings=aws_settings)
-    publisher = SNSMessagePublisher.build(topic_arn=topic_arn, aws_settings=aws_settings)
+    publisher = await SNSMessagePublisher.build(topic_arn=topic_arn, aws_settings=aws_settings)
 
-    publisher.publish("follow_created", {
+    await publisher.publish("follow_created", {
         'source_user': 'amancioortega',
         'target_user': 'jairo',
         'is_suggested': False,

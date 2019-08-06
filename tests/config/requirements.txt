@@ -1,2 +1,4 @@
 boto3==1.9.40
+aiobotocore
 pytest==3.10.0
+pytest-asyncio
