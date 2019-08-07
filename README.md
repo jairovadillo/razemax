@@ -41,15 +41,24 @@ SQS queue has to be subscribed to SNS topic before running the consumer
 #### Code
 
 ```python
+import asyncio
+
 from aiorazemax.consumers import MessageConsumer
 from aiorazemax.drivers import SQSDriver
 from aiorazemax.event_manager import EventManager
 from aiorazemax.publisher import SNSMessagePublisher
 
 
-def kp_message_to_event(message):
+class NorthKoreaThreatCreatedEvent:
+    def __init__(self, id, target):
+        self.id = id
+        self.target = target
+
+
+def kp_message_to_event(event_message):
+    message = event_message.body
     # Highly recommended to use Marshmallow to validate
-    return NorthKoreaThreatCreatedEvent(message.body['id'], message.body['target_name'])
+    return NorthKoreaThreatCreatedEvent(message['body']['id'], message['body']['target_name'])
 
 mapper = {
     'KPThreatCreated': kp_message_to_event
@@ -62,11 +71,20 @@ aws_settings = {
     'endpoint_url': ""
 }
 
-queue_driver = SQSDriver.build("korea-threats-queue", aws_settings)
-MessageConsumer(mapper, EventManager, queue_driver).process_message()
+async def main():
+    queue_driver = await SQSDriver.build('korea-threats-queue', aws_settings)
+    await MessageConsumer(mapper, EventManager, queue_driver).process_message()
 
-publisher = SNSMessagePublisher.build(aws_settings, 'korea-topic')
-publisher.publish('KPThreatCreated', {'id': 21, 'target_name': 'Portugal'})
+    publisher = await SNSMessagePublisher.build('korea-topic', aws_settings)
+    await publisher.publish('KPThreatCreated', {'id': 21, 'target_name': 'Portugal'})
+
+    await queue_driver._client.close()
+    await publisher._sns_client.close()
+
+
+if __name__ == '__main__':
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(main())
 ```
 
 Result:
