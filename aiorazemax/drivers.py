@@ -21,6 +21,9 @@ class SQSDriver:
         self._client = sqs_client
         self._queue_url = sqs_queue_url
 
+    async def close(self):
+        await self._client.close()
+
     async def receive_message(self) -> Union[Message, None]:
         messages = await self._client.receive_message(
             QueueUrl=self._queue_url,

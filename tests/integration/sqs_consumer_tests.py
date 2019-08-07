@@ -72,3 +72,6 @@ async def test_integration_sqs():
     await asyncio.sleep(1)   # Wait for deliver
     assert await consumer.process_message() is True
     assert await consumer.process_message() is False
+
+    await driver.close()
+    await publisher.close()

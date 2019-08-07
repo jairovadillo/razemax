@@ -8,8 +8,11 @@ import aiobotocore
 
 class SNSMessagePublisher(object):
     def __init__(self, sns_client, topic_arn):
-        self._sns_client = sns_client
+        self._client = sns_client
         self._topic_arn = topic_arn
+
+    async def close(self):
+        await self._client.close()
 
     async def publish(self, event_name: str, event_body: dict, extra_meta: dict = {}):
         meta = {
@@ -27,7 +30,7 @@ class SNSMessagePublisher(object):
         # https://docs.python.org/3/howto/logging.html#optimization
         logging.debug('event_name %s, topic_arn %s, message_json %s', event_name, self._topic_arn, message_json)
 
-        return await self._sns_client.publish(TopicArn=self._topic_arn,
+        return await self._client.publish(TopicArn=self._topic_arn,
                                         Message=message_json,
                                         MessageAttributes={
                                             'event_name': {

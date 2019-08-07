@@ -78,8 +78,8 @@ async def main():
     publisher = await SNSMessagePublisher.build('korea-topic', aws_settings)
     await publisher.publish('KPThreatCreated', {'id': 21, 'target_name': 'Portugal'})
 
-    await queue_driver._client.close()
-    await publisher._sns_client.close()
+    await queue_driver.close()
+    await publisher.close()
 
 
 if __name__ == '__main__':
