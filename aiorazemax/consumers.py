@@ -6,8 +6,7 @@ from aiorazemax.event_manager import EventManager
 
 
 class MessageConsumer:
-    def __init__(self, mapper_factory: dict, event_manager: Union[EventManager, type(EventManager)],
-                 queue_driver: SQSDriver):
+    def __init__(self, mapper_factory: dict, event_manager: Union[EventManager, type(EventManager)], queue_driver: SQSDriver) -> bool:
         self._mapper_factory = mapper_factory
         self._queue_driver = queue_driver
         self._event_manager = event_manager
@@ -18,7 +17,7 @@ class MessageConsumer:
 
         if not message:
             logging.debug("No messages to process")
-            return None
+            return False
 
         logging.debug(f"Message type is: {message.event_name}")
         try:
@@ -36,3 +35,4 @@ class MessageConsumer:
             self._queue_driver.mark_message_unprocessed(message, e)
         else:
             await self._queue_driver.mark_message_processed(message)
+        return True

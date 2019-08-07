@@ -24,16 +24,16 @@ class SQSDriver:
     async def receive_message(self) -> Union[Message, None]:
         messages = await self._client.receive_message(
             QueueUrl=self._queue_url,
-            MaxNumberOfMessages=1
+            MaxNumberOfMessages=1,
+            WaitTimeSeconds=1
         )
 
         logging.debug(f"Message received: {messages}")
 
-        if not messages or not messages['Messages']:
+        if not messages or not messages.get('Messages'):
             return None
 
-        messages = messages['Messages']
-        message = messages[0]
+        message = messages['Messages'][0]
         message = self._process_message(message)
 
         return message

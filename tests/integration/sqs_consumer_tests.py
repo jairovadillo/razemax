@@ -1,6 +1,5 @@
 import asyncio
 import os
-import time
 
 import pytest
 
@@ -59,6 +58,9 @@ async def test_integration_sqs():
 
     driver = await SQSDriver.build(queue_name=queue_name, aws_settings=aws_settings)
     publisher = await SNSMessagePublisher.build(topic_arn=topic_arn, aws_settings=aws_settings)
+    consumer = MessageConsumer(mapper_factory=message_factory, event_manager=EventManager(), queue_driver=driver)
+
+    assert await consumer.process_message() is False
 
     await publisher.publish("follow_created", {
         'source_user': 'amancioortega',
@@ -67,8 +69,6 @@ async def test_integration_sqs():
         'timestamp': "2018-12-01T11:23:23.0000"
     })
 
-    time.sleep(1)   # Wait for deliver
-
-    consumer = MessageConsumer(mapper_factory=message_factory, event_manager=EventManager(), queue_driver=driver)
-
-    await consumer.process_message()
+    await asyncio.sleep(1)   # Wait for deliver
+    assert await consumer.process_message() is True
+    assert await consumer.process_message() is False
