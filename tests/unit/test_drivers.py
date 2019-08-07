@@ -3,8 +3,8 @@ import os
 import pytest
 from asynctest import CoroutineMock, Mock
 
-from razemax.drivers import SQSDriver
-from razemax.exceptions import DriverError
+from aiorazemax.drivers import SQSDriver
+from aiorazemax.exceptions import DriverError
 
 
 class TestSQSDriver:

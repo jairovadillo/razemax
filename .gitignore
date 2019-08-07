@@ -15,4 +15,4 @@ stg.env
 build/
 dist/
 .pytest_cache
-razemax.egg-info
+aiorazemax.egg-info

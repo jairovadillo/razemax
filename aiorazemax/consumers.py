@@ -1,8 +1,8 @@
 import logging
 from typing import Union
 
-from razemax.drivers import SQSDriver
-from razemax.event_manager import EventManager
+from aiorazemax.drivers import SQSDriver
+from aiorazemax.event_manager import EventManager
 
 
 class MessageConsumer:

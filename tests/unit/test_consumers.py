@@ -3,8 +3,8 @@ from unittest.mock import MagicMock
 import pytest
 from asynctest import CoroutineMock
 
-from razemax.consumers import MessageConsumer
-from razemax.drivers import SQSDriver, Message
+from aiorazemax.consumers import MessageConsumer
+from aiorazemax.drivers import SQSDriver, Message
 
 
 class TestConsumer:

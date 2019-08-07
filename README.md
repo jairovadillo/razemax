@@ -1,5 +1,5 @@
-# Razemax
-[![Build Status](https://travis-ci.com/21Buttons/razemax.svg?branch=master)](https://travis-ci.com/21Buttons/razemax)
+# Aiorazemax
+[![Build Status](https://travis-ci.com/21Buttons/aiorazemax.svg?branch=master)](https://travis-ci.com/21Buttons/aiorazemax)
 
 ✉️ Async communications using AWS SNS + SQS for Python services ✨
 
@@ -10,7 +10,7 @@
 _Show me the code_
 
 ```python
-from razemax.event_manager import EventManager
+from aiorazemax.event_manager import EventManager
 
 
 class NorthKoreaThreatCreatedEvent:
@@ -21,8 +21,8 @@ class NorthKoreaThreatCreatedEvent:
 
 def trump_subscriber(event: NorthKoreaThreatCreatedEvent):
     print(f"North korea will attack us or {event.target}!")
-    
-    
+
+
 EventManager.subscribe(trump_subscriber, NorthKoreaThreatCreatedEvent)
 EventManager.trigger(NorthKoreaThreatCreatedEvent(0, "Mexico"))
 ```
@@ -41,10 +41,10 @@ SQS queue has to be subscribed to SNS topic before running the consumer
 #### Code
 
 ```python
-from razemax.consumers import MessageConsumer
-from razemax.drivers import SQSDriver
-from razemax.event_manager import EventManager
-from razemax.publisher import SNSMessagePublisher
+from aiorazemax.consumers import MessageConsumer
+from aiorazemax.drivers import SQSDriver
+from aiorazemax.event_manager import EventManager
+from aiorazemax.publisher import SNSMessagePublisher
 
 
 def kp_message_to_event(message):

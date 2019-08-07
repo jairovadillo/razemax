@@ -4,10 +4,10 @@ import time
 
 import pytest
 
-from razemax.consumers import MessageConsumer
-from razemax.drivers import SQSDriver, Message
-from razemax.event_manager import EventManager
-from razemax.publisher import SNSMessagePublisher
+from aiorazemax.consumers import MessageConsumer
+from aiorazemax.drivers import SQSDriver, Message
+from aiorazemax.event_manager import EventManager
+from aiorazemax.publisher import SNSMessagePublisher
 
 
 # events.py

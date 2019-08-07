@@ -1,6 +1,6 @@
 from unittest.mock import Mock
 
-from razemax.event_manager import EventManager
+from aiorazemax.event_manager import EventManager
 
 
 class TestEvent:

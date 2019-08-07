@@ -5,7 +5,7 @@ from typing import Union
 
 import aiobotocore
 
-from razemax.exceptions import DriverError
+from aiorazemax.exceptions import DriverError
 
 
 class Message:
