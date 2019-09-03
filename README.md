@@ -14,7 +14,7 @@ from razemax.event_manager import EventManager
 
 
 class NorthKoreaThreatCreatedEvent:
-    def __init__(self, id, target):
+    def __init__(self, id: int, target: str):
         self.id = id
         self.target = target
 
@@ -36,7 +36,7 @@ North korea will attack us or Mexico!
 
 #### Preconditions
 
-SQS queue has to be subscribed to SNS topic before running the consumer
+SQS queue must be subscribed to SNS topic before running the consumer, also the queue needs to filter only the events of interest. If the provided SNS topic pushes events which are not included in the mapper, then razemax will be raising exceptions.
 
 #### Code
 
@@ -75,9 +75,9 @@ Result:
 North korea will attack us or Portugal!
 ```
 
-## Installing (TODO)
+## Installing
 
-`pip install git@github.com/transporter`
+`pip install razemax`
 
 
 ## Running the tests
