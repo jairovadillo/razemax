@@ -1,5 +1,6 @@
 # Razemax
 [![Build Status](https://travis-ci.com/21Buttons/razemax.svg?branch=master)](https://travis-ci.com/21Buttons/razemax)
+[![Coverage Status](https://coveralls.io/repos/github/21Buttons/razemax/badge.svg?branch=master)](https://coveralls.io/github/21Buttons/razemax?branch=master)
 
 ✉️ Async communications using AWS SNS + SQS for Python services ✨
 
