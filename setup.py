@@ -15,7 +15,8 @@ REQUIRES_PYTHON = '>=3.6.0'
 VERSION = None
 
 REQUIRED = [
-    'boto3'
+    'boto3',
+    'python-coveralls'
 ]
 
 EXTRAS = {}
