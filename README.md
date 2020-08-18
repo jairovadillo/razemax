@@ -88,10 +88,6 @@ make unit-tests
 make integration-tests
 ```
 
-## Authors
-
-* Jairo Vadillo ([@jairovadillo](https://github.com/jairovadillo))
-
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
