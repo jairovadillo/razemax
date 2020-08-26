@@ -8,7 +8,7 @@ from setuptools import setup
 
 NAME = 'razemax'
 DESCRIPTION = 'SNS + SQS Communications made easy'
-URL = f'https://github.com/21buttons/{NAME}'
+URL = f'https://github.com/21ButtonsX/{NAME}'
 EMAIL = 'jairo@21buttons.com'
 AUTHOR = '21 Buttons APP S.L.'
 REQUIRES_PYTHON = '>=3.6.0'
